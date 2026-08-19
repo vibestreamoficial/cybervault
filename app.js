@@ -33,6 +33,10 @@ let adminLogs = [];
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 2500);
+    
+    // Initialize admin user
+    initAdminUser();
+    
     renderFeatured();
     renderCategories();
     renderCatalog();
@@ -41,6 +45,23 @@ document.addEventListener('DOMContentLoaded', () => {
     animateStats();
     initMatrixRain();
 });
+
+function initAdminUser() {
+    const adminEmail = 'dohypemeno5@gmail.com';
+    const adminPass = 'sl007';
+    let users = JSON.parse(localStorage.getItem('cv_users') || '[]');
+    
+    // Check if admin exists
+    const adminExists = users.find(u => u.email === adminEmail);
+    if (!adminExists) {
+        users.push({ name: 'Admin', email: adminEmail, password: adminPass, isAdmin: true });
+        localStorage.setItem('cv_users', JSON.stringify(users));
+    } else {
+        // Make sure admin is always admin
+        adminExists.isAdmin = true;
+        localStorage.setItem('cv_users', JSON.stringify(users));
+    }
+}
 
 // ===== MATRIX RAIN =====
 function initMatrixRain() {
@@ -356,12 +377,19 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 function login(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPass').value;
     const users = JSON.parse(localStorage.getItem('cv_users') || '[]');
-    const user = users.find(u => u.email === email);
+    const user = users.find(u => u.email === email && u.password === pass);
     if (user) {
         currentUser = user;
     } else {
-        currentUser = { name: email.split('@')[0], email, isAdmin: false };
+        // Check if email exists but wrong password
+        const emailExists = users.find(u => u.email === email);
+        if (emailExists) {
+            showToast('Senha incorreta!', 'error');
+            return;
+        }
+        currentUser = { name: email.split('@')[0], email, password: pass, isAdmin: false };
         users.push(currentUser);
         localStorage.setItem('cv_users', JSON.stringify(users));
     }
