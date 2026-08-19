@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberVault - Marketplace de Cibersegurança</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="boot-sequence">
+            <div class="boot-line">> initializing CyberVault v3.0...</div>
+            <div class="boot-line">> loading security modules...</div>
+            <div class="boot-line">> connecting to vault...</div>
+            <div class="boot-line">> access granted</div>
+            <div class="boot-logo">CYBER<span>VAULT</span></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">
+                <i class="fas fa-shield-halved"></i>
+                CYBER<span>VAULT</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="showPage('home')" class="nav-link active" data-page="home">
+                    <i class="fas fa-home"></i> Início
+                </a>
+                <a href="#" onclick="showPage('catalog')" class="nav-link" data-page="catalog">
+                    <i class="fas fa-store"></i> Catálogo
+                </a>
+                <a href="#" onclick="showPage('docs')" class="nav-link" data-page="docs">
+                    <i class="fas fa-book"></i> Docs
+                </a>
+                <a href="#" onclick="showPage('support')" class="nav-link" data-page="support">
+                    <i class="fas fa-headset"></i> Suporte
+                </a>
+            </div>
+            <div class="nav-actions">
+                <button class="cart-btn" onclick="showPage('cart')" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <div class="user-menu" id="userMenu">
+                    <button class="user-btn" onclick="toggleUserDropdown()">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">Entrar</span>
+                    </button>
+                    <div class="dropdown" id="userDropdown">
+                        <div id="authButtons">
+                            <a href="#" onclick="showModal('login')"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="#" onclick="showModal('register')"><i class="fas fa-user-plus"></i> Cadastrar</a>
+                        </div>
+                        <div id="userActions" style="display:none">
+                            <a href="#" onclick="showPage('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a href="#" onclick="showPage('purchases')"><i class="fas fa-download"></i> Minhas Compras</a>
+                            <a href="#" onclick="showPage('admin')" id="adminLink" style="display:none">
+                                <i class="fas fa-cog"></i> Admin
+                            </a>
+                            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                        </div>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- HOME PAGE -->
+        <section id="page-home" class="page active">
+            <!-- Hero -->
+            <div class="hero">
+                <div class="hero-bg">
+                    <div class="matrix-rain" id="matrixRain"></div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-shield-halved"></i> Marketplace Nº1 em Cibersegurança
+                    </div>
+                    <h1 class="hero-title">
+                        Defenda seus <span class="neon-text">sistemas</span> com as melhores <span class="neon-text">ferramentas</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Ferramentas profissionais de cibersegurança para análise autorizada, 
+                        monitoramento defensivo e proteção de infraestrutura.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="showPage('catalog')">
+                            <i class="fas fa-store"></i> Explorar Catálogo
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('docs')">
+                            <i class="fas fa-book"></i> Documentação
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" data-target="150">0</span>+
+                            <span class="stat-label">Ferramentas</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="5000">0</span>+
+                            <span class="stat-label">Usuários</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="99">0</span>%
+                            <span class="stat-label">Uptime</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Tools -->
+            <div class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2><i class="fas fa-fire"></i> Ferramentas em Destaque</h2>
+                        <p>As mais populares da plataforma</p>
+                    </div>
+                    <div class="featured-grid" id="featuredGrid"></div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="section section-dark">
+                <div class="container">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tags"></i> Categorias</h2>
+                        <p>Encontre a ferramenta certa para cada necessidade</p>
+                    </div>
+                    <div class="categories-grid" id="categoriesGrid"></div>
+                </div>
+            </div>
+
+            <!-- Responsible Use Banner -->
+            <div class="section">
+                <div class="container">
+                    <div class="responsible-use">
+                        <div class="ru-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="ru-content">
+                            <h3>Uso Responsável e Autorizado</h3>
+                            <p>Todas as ferramentas do CyberVault são destinadas exclusivamente para uso em sistemas próprios ou com autorização expressa do proprietário. O uso não autorizado de ferramentas de segurança contra sistemas de terceiros é crime previsto no Art. 154-A do Código Penal Brasileiro e em leis internacionais de cibersegurança.</p>
+                            <a href="#" onclick="showPage('terms')" class="btn btn-outline btn-sm">Ler Termos de Serviço</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATALOG PAGE -->
+        <section id="page-catalog" class="page">
+            <div class="catalog-hero">
+                <h1><i class="fas fa-store"></i> Catálogo de Ferramentas</h1>
+                <p>Explore todas as ferramentas disponíveis</p>
+            </div>
+            <div class="container">
+                <div class="catalog-layout">
+                    <aside class="catalog-sidebar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Buscar ferramentas..." oninput="filterProducts()">
+                        </div>
+                        <div class="filter-group">
+                            <h3><i class="fas fa-filter"></i> Categorias</h3>
+                            <div id="categoryFilters"></div>
+                        </div>
+                        <div class="filter-group">
+                            <h3><i class="fas fa-dollar-sign"></i> Faixa de Preço</h3>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="all" checked onchange="filterProducts()"> Todos
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="free" onchange="filterProducts()"> Gratuito
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="0-50" onchange="filterProducts()"> Até R$ 50
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="50-200" onchange="filterProducts()"> R$ 50 - R$ 200
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="200+" onchange="filterProducts()"> Acima de R$ 200
+                            </label>
+                        </div>
+                        <div class="filter-group">
+                            <h3><i class="fas fa-sort"></i> Ordenar por</h3>
+                            <select id="sortSelect" onchange="filterProducts()">
+                                <option value="popular">Mais Popular</option>
+                                <option value="newest">Mais Recente</option>
+                                <option value="price-low">Menor Preço</option>
+                                <option value="price-high">Maior Preço</option>
+                                <option value="rating">Melhor Avaliação</option>
+                            </select>
+                        </div>
+                    </aside>
+                    <div class="catalog-main">
+                        <div class="catalog-results" id="catalogResults"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCT DETAIL PAGE -->
+        <section id="page-product" class="page">
+            <div class="container" id="productDetail"></div>
+        </section>
+
+        <!-- CART PAGE -->
+        <section id="page-cart" class="page">
+            <div class="container">
+                <h1><i class="fas fa-shopping-cart"></i> Carrinho de Compras</h1>
+                <div class="cart-layout">
+                    <div class="cart-items" id="cartItems"></div>
+                    <div class="cart-summary" id="cartSummary"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKOUT PAGE -->
+        <section id="page-checkout" class="page">
+            <div class="container">
+                <h1><i class="fas fa-credit-card"></i> Checkout</h1>
+                <div class="checkout-layout">
+                    <div class="checkout-form">
+                        <h3>Informações de Pagamento</h3>
+                        <form id="checkoutForm" onsubmit="processCheckout(event)">
+                            <div class="form-group">
+                                <label>Nome Completo</label>
+                                <input type="text" required placeholder="Seu nome">
+                            </div>
+                            <div class="form-group">
+                                <label>E-mail</label>
+                                <input type="email" required placeholder="seu@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>CPF/CNPJ</label>
+                                <input type="text" required placeholder="000.000.000-00">
+                            </div>
+                            <div class="form-group">
+                                <label>Número do Cartão</label>
+                                <input type="text" required placeholder="0000 0000 0000 0000" maxlength="19">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Validade</label>
+                                    <input type="text" required placeholder="MM/AA" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="text" required placeholder="000" maxlength="4">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" required>
+                                    Li e aceito os <a href="#" onclick="showPage('terms')">Termos de Serviço</a> e 
+                                    <a href="#" onclick="showPage('terms')">Política de Uso Responsável</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <i class="fas fa-lock"></i> Finalizar Compra
+                            </button>
+                        </form>
+                    </div>
+                    <div class="checkout-summary" id="checkoutSummary"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- USER DASHBOARD -->
+        <section id="page-dashboard" class="page">
+            <div class="container">
+                <h1><i class="fas fa-tachometer-alt"></i> Minha Conta</h1>
+                <div class="dashboard-grid" id="dashboardContent"></div>
+            </div>
+        </section>
+
+        <!-- PURCHASES PAGE -->
+        <section id="page-purchases" class="page">
+            <div class="container">
+                <h1><i class="fas fa-download"></i> Minhas Compras</h1>
+                <div id="purchasesList"></div>
+            </div>
+        </section>
+
+        <!-- ADMIN PAGE -->
+        <section id="page-admin" class="page">
+            <div class="container">
+                <h1><i class="fas fa-cog"></i> Painel Administrativo</h1>
+                <div class="admin-layout">
+                    <nav class="admin-sidebar">
+                        <a href="#" onclick="showAdminTab('products')" class="admin-nav active">
+                            <i class="fas fa-box"></i> Produtos
+                        </a>
+                        <a href="#" onclick="showAdminTab('users')" class="admin-nav">
+                            <i class="fas fa-users"></i> Usuários
+                        </a>
+                        <a href="#" onclick="showAdminTab('orders')" class="admin-nav">
+                            <i class="fas fa-receipt"></i> Pedidos
+                        </a>
+                        <a href="#" onclick="showAdminTab('reviews')" class="admin-nav">
+                            <i class="fas fa-star"></i> Avaliações
+                        </a>
+                        <a href="#" onclick="showAdminTab('logs')" class="admin-nav">
+                            <i class="fas fa-file-alt"></i> Logs
+                        </a>
+                    </nav>
+                    <div class="admin-main" id="adminContent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCS PAGE -->
+        <section id="page-docs" class="page">
+            <div class="container">
+                <h1><i class="fas fa-book"></i> Documentação</h1>
+                <div class="docs-layout">
+                    <nav class="docs-sidebar">
+                        <a href="#" onclick="showDocsTab('getting-started')" class="docs-nav active">Início Rápido</a>
+                        <a href="#" onclick="showDocsTab('installation')" class="docs-nav">Instalação</a>
+                        <a href="#" onclick="showDocsTab('api')" class="docs-nav">API Reference</a>
+                        <a href="#" onclick="showDocsTab('guides')" class="docs-nav">Guias</a>
+                        <a href="#" onclick="showDocsTab('faq')" class="docs-nav">FAQ</a>
+                    </nav>
+                    <div class="docs-main" id="docsContent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUPPORT PAGE -->
+        <section id="page-support" class="page">
+            <div class="container">
+                <h1><i class="fas fa-headset"></i> Suporte</h1>
+                <div class="support-grid" id="supportContent"></div>
+            </div>
+        </section>
+
+        <!-- TERMS PAGE -->
+        <section id="page-terms" class="page">
+            <div class="container">
+                <h1><i class="fas fa-gavel"></i> Termos de Serviço</h1>
+                <div class="terms-content" id="termsContent"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3><i class="fas fa-shield-halved"></i> CYBERVAULT</h3>
+                    <p>Marketplace profissional de ferramentas de cibersegurança para uso autorizado e defensivo.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Links</h4>
+                    <a href="#" onclick="showPage('catalog')">Catálogo</a>
+                    <a href="#" onclick="showPage('docs')">Documentação</a>
+                    <a href="#" onclick="showPage('support')">Suporte</a>
+                    <a href="#" onclick="showPage('terms')">Termos de Serviço</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Categorias</h4>
+                    <a href="#" onclick="showPage('catalog')">Análise de Vulnerabilidades</a>
+                    <a href="#" onclick="showPage('catalog')">Monitoramento</a>
+                    <a href="#" onclick="showPage('catalog')">Laboratório/CTF</a>
+                    <a href="#" onclick="showPage('catalog')">Ferramentas Defensivas</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <p class="legal-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Todas as ferramentas são para uso autorizado. 
+                        Uso não autorizado é crime.
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CyberVault. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
