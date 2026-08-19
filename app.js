@@ -51,9 +51,15 @@ function initAdminUser() {
     const adminPass = 'sl007';
     let users = JSON.parse(localStorage.getItem('cv_users') || '[]');
     
-    // Check if admin exists
-    const adminExists = users.find(u => u.email === adminEmail);
+    // Remove any existing admin without password
+    users = users.filter(u => !(u.email === adminEmail && !u.password));
+    
+    // Check if admin exists with password
+    const adminExists = users.find(u => u.email === adminEmail && u.password === adminPass);
     if (!adminExists) {
+        // Remove old entry if exists
+        users = users.filter(u => u.email !== adminEmail);
+        // Add new admin
         users.push({ name: 'Admin', email: adminEmail, password: adminPass, isAdmin: true });
         localStorage.setItem('cv_users', JSON.stringify(users));
     } else {
